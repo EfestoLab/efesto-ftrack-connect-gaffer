@@ -20,6 +20,7 @@ QtGui = GafferUI._qtImport( "QtGui" )
 
 class MyWidgetWrapper(GafferUI.Widget) :
     '''Create a wrapper around my custom widget'''
+
     def __init__( self, *args, **kw ):
         logger.info('creating: %s ' % self.__class__.__name__)
         self.mywidget = MyWidget()
@@ -38,11 +39,13 @@ class MyWidgetWrapper(GafferUI.Widget) :
         pass
 
     def getState(self):
+        logger.info('getting state')
         return True
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
+
     def __init__( self, *args, **kw ) :
         logger.info('creating: %s ' % self.__class__.__name__)
 
