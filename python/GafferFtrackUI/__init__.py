@@ -1,1 +1,2 @@
 import FtrackImportUI
+from myWidgetPlugValue import MyWidgetPlugValue

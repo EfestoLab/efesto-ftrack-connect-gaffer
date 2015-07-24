@@ -5,4 +5,8 @@ import GafferFtrackUI
 
 nodeMenu = GafferUI.NodeMenu.acquire( application )
 
-nodeMenu.append( "/Ftrack/Import", GafferFtrack.FtrackImport, searchText = "FtrackImport" )
+nodeMenu.append(
+    "/Ftrack/Import",
+    GafferFtrack.FtrackImport,
+    searchText="FtrackImport"
+)
