@@ -19,7 +19,7 @@ Gaffer.Metadata.registerNode(
     """,
 
     plugs={
-        "input": [
+        "fileName": [
             "description",
             """
             Provide a custom widget
