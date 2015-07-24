@@ -14,8 +14,8 @@ QtGui = GafferUI._qtImport( "QtGui" )
 class MyWidgetWrapper(GafferUI.Widget) :
     '''Create a wrapper around my custom widget'''
     def __init__( self, *args, **kw ):
-        mywidget = MyWidget()
-        super(MyWidgetWrapper, self).__init__(mywidget, *args, **kw)
+        self.mywidget = MyWidget()
+        super(MyWidgetWrapper, self).__init__(self.mywidget, *args, **kw)
         self.__stateChangedSignal = GafferUI.WidgetSignal()
 
 
@@ -29,7 +29,4 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     def setHighlighted( self, highlighted ) :
 
         GafferUI.PlugValueWidget.setHighlighted( self, highlighted )
-        self.__boolWidget.setHighlighted( highlighted )
-
-
-GafferUI.PlugValueWidget.registerType(GafferFtrack.FtrackImport, MyWidgetPlugValue)
+        self.__myWidget.setHighlighted( highlighted )
