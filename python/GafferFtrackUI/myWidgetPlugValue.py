@@ -40,6 +40,7 @@ class MyWidgetWrapper(GafferUI.Widget) :
     def getState(self):
         return True
 
+
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
     def __init__( self, *args, **kw ) :
@@ -76,5 +77,7 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
         return False
 
     def __setPlugValue( self ) :
+        logger.info('setting plug value')
+
         with Gaffer.UndoContext( self.getPlug().ancestor( Gaffer.ScriptNode ) ) :
             self.getPlug().setValue( self.__myWidget.getState() )
