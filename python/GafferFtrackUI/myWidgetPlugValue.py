@@ -3,6 +3,8 @@ import IECore
 
 import Gaffer
 import GafferUI
+import GafferFtrack
+
 from myWidget import MyWidget
 
 QtCore = GafferUI._qtImport( "QtCore" )
@@ -23,3 +25,6 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
         self.__myWidget = MyWidgetWrapper()
         super(MyWidgetPlugValue, self).__init__(self.__myWidget, plug, **kw )
         self._addPopupMenu( self.__myWidget )
+
+
+GafferUI.PlugValueWidget.registerType(GafferFtrack.FtrackImport, MyWidgetPlugValue)
