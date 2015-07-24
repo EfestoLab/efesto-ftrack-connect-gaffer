@@ -16,15 +16,20 @@ class MyWidgetWrapper(GafferUI.Widget) :
     def __init__( self, *args, **kw ):
         mywidget = MyWidget()
         super(MyWidgetWrapper, self).__init__(mywidget, *args, **kw)
-
+        self.__stateChangedSignal = GafferUI.WidgetSignal()
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
-    def __init__( self, plug, **kw ) :
+    def __init__( self, *args, **kw ) :
         self.__myWidget = MyWidgetWrapper()
-        super(MyWidgetPlugValue, self).__init__(self.__myWidget, plug, **kw )
-        self._addPopupMenu( self.__myWidget )
+        super(MyWidgetPlugValue, self).__init__(self.__myWidget, *args, **kw )
+        self._addPopupMenu(self.__myWidget)
+
+    def setHighlighted( self, highlighted ) :
+
+        GafferUI.PlugValueWidget.setHighlighted( self, highlighted )
+        self.__boolWidget.setHighlighted( highlighted )
 
 
 GafferUI.PlugValueWidget.registerType(GafferFtrack.FtrackImport, MyWidgetPlugValue)
