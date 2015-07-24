@@ -12,7 +12,7 @@ Gaffer.Metadata.registerNode(
     """,
 
     plugs={
-        "asset": [
+        "input": [
             "description",
             """
             Provide a custom widget
