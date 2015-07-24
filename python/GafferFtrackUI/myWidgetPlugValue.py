@@ -1,4 +1,4 @@
-
+from __future__ import with_statement
 import IECore
 
 import Gaffer
@@ -25,6 +25,19 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
         self.__myWidget = MyWidgetWrapper()
         super(MyWidgetPlugValue, self).__init__(self.__myWidget, *args, **kw )
         self._addPopupMenu(self.__myWidget)
+        self.__stateChangedConnection = self.__myWidget.stateChangedSignal().connect( Gaffer.WeakMethod( self.__stateChanged ) )
+        self._updateFromPlug()
+
+
+    def _updateFromPlug( self ) :
+        print self.getPlug()
+        if self.getPlug() is not None :
+
+            with self.getContext() :
+                with Gaffer.BlockedConnection( self.__stateChangedConnection ) :
+                    self.__myWidget.setState( self.getPlug().getValue() )
+
+        self.__myWidget.setEnabled( self._editable() )
 
     def setHighlighted( self, highlighted ) :
 
