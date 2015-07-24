@@ -1,5 +1,5 @@
 import sys
-from PySide import QtGui
+from PySide import QtGui, QtCore
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 class MyWidget(QtGui.QWidget):
+    # just to ensure is there....
+    stateChanged = QtCore.Signal()
+
     def __init__(self, parent=None):
         logger.info('creating : %s' % self.__class__.__name__)
 
