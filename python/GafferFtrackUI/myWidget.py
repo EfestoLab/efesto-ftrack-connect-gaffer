@@ -1,9 +1,15 @@
 import sys
 from PySide import QtGui
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class MyWidget(QtGui.QWidget):
     def __init__(self, parent=None):
+        logger.info('creating : %s' % self.__class__.__name__)
+
         super(MyWidget, self).__init__(parent=parent)
         layout = QtGui.QVBoxLayout()
         self.setLayout(layout)

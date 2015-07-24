@@ -2,6 +2,13 @@ import Gaffer
 import GafferUI
 import GafferScene
 import GafferFtrack
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info('registering node...')
+
 
 Gaffer.Metadata.registerNode(
     GafferFtrack.FtrackImport,
@@ -23,3 +30,5 @@ Gaffer.Metadata.registerNode(
         ]
     }
 )
+
+logger.info('node registered')
