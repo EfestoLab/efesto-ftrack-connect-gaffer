@@ -18,6 +18,14 @@ class MyWidgetWrapper(GafferUI.Widget) :
         super(MyWidgetWrapper, self).__init__(self.mywidget, *args, **kw)
         self.__stateChangedSignal = GafferUI.WidgetSignal()
 
+    def stateChangedSignal( self ) :
+        return self.__stateChangedSignal
+
+    def __stateChanged( self, state ) :
+        self.__stateChangedSignal( self )
+
+    def setState(self, state):
+        pass
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
@@ -25,14 +33,14 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
         self.__myWidget = MyWidgetWrapper()
         super(MyWidgetPlugValue, self).__init__(self.__myWidget, *args, **kw )
         self._addPopupMenu(self.__myWidget)
-        self.__stateChangedConnection = self.__myWidget.stateChangedSignal().connect( Gaffer.WeakMethod( self.__stateChanged ) )
+        self.__stateChangedConnection = self.__myWidget.stateChangedSignal().connect(
+            Gaffer.WeakMethod(self.__stateChanged)
+        )
         self._updateFromPlug()
 
 
     def _updateFromPlug( self ) :
-        print self.getPlug()
         if self.getPlug() is not None :
-
             with self.getContext() :
                 with Gaffer.BlockedConnection( self.__stateChangedConnection ) :
                     self.__myWidget.setState( self.getPlug().getValue() )
@@ -40,6 +48,15 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
         self.__myWidget.setEnabled( self._editable() )
 
     def setHighlighted( self, highlighted ) :
-
         GafferUI.PlugValueWidget.setHighlighted( self, highlighted )
         self.__myWidget.setHighlighted( highlighted )
+
+    def __stateChanged( self, widget ) :
+        self.__setPlugValue()
+
+        return False
+
+    def __setPlugValue( self ) :
+        with Gaffer.UndoContext( self.getPlug().ancestor( Gaffer.ScriptNode ) ) :
+
+            self.getPlug().setValue( self.__myWidget.getState() )
