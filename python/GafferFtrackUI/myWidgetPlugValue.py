@@ -6,12 +6,10 @@ import Gaffer
 import GafferUI
 import GafferFtrack
 
-from myWidget import MyWidget
-
+from GafferFtrackUI.myWidget import MyWidget
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-logger.info('loading widget wrapper and plug value')
 
 QtCore = GafferUI._qtImport( "QtCore" )
 QtGui = GafferUI._qtImport( "QtGui" )

@@ -8,8 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 class MyWidget(QtGui.QWidget):
-    # just to ensure is there....
-    stateChanged = QtCore.Signal()
 
     def __init__(self, parent=None):
         logger.info('creating : %s' % self.__class__.__name__)

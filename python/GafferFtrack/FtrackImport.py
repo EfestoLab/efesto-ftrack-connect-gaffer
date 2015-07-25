@@ -16,11 +16,5 @@ class FtrackImport(GafferScene.AlembicSource):
         # add manually a chid
         self.addChild(Gaffer.StringPlug('something'))
 
-        # try setting the custom widget as child
-        # import GafferFtrackUI
-        # self.addChild( GafferFtrackUI.MyWidgetWrapper(
-        #    GafferFtrackUI.MyWidgetPlugValue )
-        # )
-
 
 IECore.registerRunTimeTyped(FtrackImport, typeName="Ftrack::Import" )
