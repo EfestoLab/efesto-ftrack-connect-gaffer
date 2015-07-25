@@ -1,7 +1,5 @@
 import GafferUI
-
 import GafferFtrack
-import GafferFtrackUI
 
 nodeMenu = GafferUI.NodeMenu.acquire( application )
 

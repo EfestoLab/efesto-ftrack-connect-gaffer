@@ -1,8 +1,8 @@
-import IECore
+import logging
 
+import IECore
 import Gaffer
 import GafferScene
-import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

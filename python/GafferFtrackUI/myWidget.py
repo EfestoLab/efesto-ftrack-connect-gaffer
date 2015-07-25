@@ -1,6 +1,7 @@
 import sys
-from PySide import QtGui, QtCore
 import logging
+
+from PySide import QtGui, QtCore
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

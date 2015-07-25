@@ -1,8 +1,7 @@
-import Gaffer
-import GafferUI
-import GafferScene
-import GafferFtrack
 import logging
+
+import Gaffer
+import GafferFtrack
 
 
 logging.basicConfig(level=logging.INFO)

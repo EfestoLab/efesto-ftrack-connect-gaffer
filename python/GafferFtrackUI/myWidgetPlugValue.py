@@ -2,7 +2,6 @@ from __future__ import with_statement
 import logging
 
 import IECore
-
 import Gaffer
 import GafferUI
 import GafferFtrack
