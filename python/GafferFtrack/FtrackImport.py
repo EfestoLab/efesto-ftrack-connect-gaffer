@@ -11,6 +11,6 @@ class FtrackImport(GafferScene.AlembicSource):
     def __init__(self, name='FtrackImport'):
         super(FtrackImport, self).__init__(name=name)
         logger.info('creating : %s' % self.__class__.__name__)
-
+        logger.info(self['fileName'])
 
 IECore.registerRunTimeTyped(FtrackImport)
