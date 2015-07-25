@@ -1,3 +1,4 @@
 import FtrackImportUI
-from GafferFtrackUI.myWidgetPlugValue import MyWidgetPlugValue, MyWidgetWrapper
-
+from GafferFtrackUI.myWidgetPlugValue import (
+    MyWidgetPlugValue, MyWidgetWrapper
+)

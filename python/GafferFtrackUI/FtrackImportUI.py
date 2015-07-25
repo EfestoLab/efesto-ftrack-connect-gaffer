@@ -7,11 +7,14 @@ import GafferFtrack
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-logger.info('registering node...')
+
+
+node = GafferFtrack.FtrackImport
+logger.info('registering node %s' % node)
 
 
 Gaffer.Metadata.registerNode(
-    GafferFtrack.FtrackImport,
+    node,
 
     "description",
     """
@@ -20,9 +23,11 @@ Gaffer.Metadata.registerNode(
 
     plugs={
         "fileName": [
+
             "description",
+
             """
-            Provide a custom widget
+            Provide a custom widget.
             """,
 
             "nodule:type", "",
@@ -31,9 +36,11 @@ Gaffer.Metadata.registerNode(
         ],
 
         "another": [
+
             "description",
+
             """
-            A String Plug widget
+            A String Plug widget.
             """,
 
             "nodule:type", "",
@@ -44,4 +51,4 @@ Gaffer.Metadata.registerNode(
     }
 )
 
-logger.info('node registered')
+logger.info('node %s registered' % node)
