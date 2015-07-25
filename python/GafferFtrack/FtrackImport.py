@@ -24,4 +24,4 @@ class FtrackImport(GafferScene.AlembicSource):
         # )
 
 
-IECore.registerRunTimeTyped(FtrackImport, typeName = "Ftrack::Import" )
+IECore.registerRunTimeTyped(FtrackImport, typeName="Ftrack::Import" )
