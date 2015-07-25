@@ -15,8 +15,8 @@ class FtrackImport(GafferScene.AlembicSource):
         self.addChild(Gaffer.StringPlug('something'))
 
         # import GafferFtrackUI
-        # self.addChild( Gaffer.StringPlug(
-        #    "myWidget", GafferFtrackUI.MyWidgetPlugValue )
+        # self.addChild( GafferFtrackUI.MyWidgetWrapper(
+        #    GafferFtrackUI.MyWidgetPlugValue )
         # )
 
 
