@@ -23,7 +23,11 @@ class MyWidgetWrapper(GafferUI.Widget) :
     def __init__( self, *args, **kw ):
         logger.info('creating: %s ' % self.__class__.__name__)
         self.mywidget = MyWidget()
-        super(MyWidgetWrapper, self).__init__(self.mywidget, toolTip='mywidget', **kw)
+        super(MyWidgetWrapper, self).__init__(
+            self.mywidget,
+            toolTip='mywidget',
+            **kw
+        )
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
