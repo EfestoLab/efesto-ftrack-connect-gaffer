@@ -27,6 +27,15 @@ Gaffer.Metadata.registerNode(
 
             "plugValueWidget:type",  # layout:widgetType : gaffer 0.14
             "GafferFtrackUI.MyWidgetPlugValue",
+        ],
+        "another": [
+            "description",
+            """
+            A String Plug widget
+            """,
+            "plugValueWidget:type",  # layout:widgetType : gaffer 0.14
+            "GafferUI.StringPlugValueWidget",
+
         ]
     }
 )
