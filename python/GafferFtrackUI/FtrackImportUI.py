@@ -28,25 +28,25 @@ Gaffer.Metadata.registerNode(
             Provide a custom widget.
             """,
 
-            "nodule:type", "",
+            # "nodule:type", "",
             # "layout:section", "User",
             "plugValueWidget:type",  # layout:widgetType : gaffer 0.14
             "GafferFtrackUI.MyWidgetPlugValue",
         ],
 
-        "another": [
+        # "another": [
 
-            "description",
+        #     "description",
 
-            """
-            A String Plug widget.
-            """,
+        #     """
+        #     A String Plug widget.
+        #     """,
 
-            "nodule:type", "",
-            "plugValueWidget:type",
-            "GafferUI.StringPlugValueWidget",
+        #     "nodule:type", "",
+        #     "plugValueWidget:type",
+        #     "GafferUI.StringPlugValueWidget",
 
-        ]
+        # ]
     }
 )
 

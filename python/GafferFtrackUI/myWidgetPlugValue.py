@@ -31,12 +31,12 @@ class MyWidgetWrapper(GafferUI.Widget) :
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
 
-    def __init__( self, *args, **kw ) :
+    def __init__( self, plug, **kw ) :
         logger.info('creating: %s ' % self.__class__.__name__)
 
         self.__myWidget = MyWidgetWrapper()
-        super(MyWidgetPlugValue, self).__init__(self.__myWidget, *args, **kw)
-        self._addPopupMenu(self.__myWidget)
+        super(MyWidgetPlugValue, self).__init__(self.__myWidget, plug, **kw)
+        #self._addPopupMenu(self.__myWidget)
         self._updateFromPlug()
 
     def _updateFromPlug( self ) :
