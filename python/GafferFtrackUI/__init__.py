@@ -1,5 +1,5 @@
-import FtrackImportUI
+import GafferFtrackUI.FtrackImportUI
 from GafferFtrackUI.myWidgetPlugValue import (
     MyWidgetPlugValue, MyWidgetWrapper
 )
-from myWidget import MyWidget
+from GafferFtrackUI.myWidget import MyWidget

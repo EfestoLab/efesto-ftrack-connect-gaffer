@@ -6,7 +6,8 @@ import Gaffer
 import GafferUI
 import GafferFtrack
 
-from GafferFtrackUI.myWidget import MyWidget
+from myWidget import MyWidget
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,6 +15,8 @@ logger = logging.getLogger(__name__)
 QtCore = GafferUI._qtImport( "QtCore" )
 QtGui = GafferUI._qtImport( "QtGui" )
 
+
+logger.info('loading: %s' % MyWidget)
 
 class MyWidgetWrapper(GafferUI.Widget) :
     '''Create a wrapper around my custom widget'''

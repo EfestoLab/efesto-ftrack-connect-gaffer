@@ -1,2 +1,2 @@
-from FtrackImport import FtrackImport
+from GafferFtrack.FtrackImport import FtrackImport
 
