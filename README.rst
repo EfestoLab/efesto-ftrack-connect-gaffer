@@ -5,8 +5,23 @@ Test project to evaluate the connection between gaffer and ftrack.
 
 .. code-block:: bash
 
-    export EFESTO_FTRACK_CONNECT_GAFFER = /home/efesto/devel/efesto/efesto-ftrack-connect-gaffer
+    export EFESTO_FTRACK_CONNECT_GAFFER=/home/efesto/devel/efesto/efesto-ftrack-connect-gaffer/
 
-    export PYTHONPATH=$PYTHONPATH:$EFESTO_FTRACK_CONNECT_GAFFER/python
+    export FTRACK_CORE=/home/efesto/devel/ftrack/python-api
 
-    export GAFFER_STARTUP_PATHS=${GAFFER_STARTUP_PATHS}:$EFESTO_FTRACK_CONNECT_GAFFER/startup
+    export FTRACK_CONNECT=/home/efesto/devel/ftrack/connector/ftrack-connect/source
+
+    # ftrack releated PYTHONPATH
+
+    export PYTHONPATH=${PYTHONPATH}:${FTRACK_CONNECT}
+
+    export PYTHONPATH=${PYTHONPATH}:${FTRACK_CORE}
+
+    # Gaffer related ENVS
+
+    export PYTHONPATH=${PYTHONPATH}:${EFESTO_FTRACK_CONNECT_GAFFER}/python
+
+    export GAFFER_STARTUP_PATHS=${GAFFER_STARTUP_PATHS}:${EFESTO_FTRACK_CONNECT_GAFFER}/startup
+
+    gaffer
+
