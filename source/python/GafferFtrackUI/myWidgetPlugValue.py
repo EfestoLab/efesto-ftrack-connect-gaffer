@@ -6,7 +6,7 @@ import Gaffer
 import GafferUI
 import GafferFtrack
 
-from ContextSelector import ContextSelector
+from myWidget import MyWidget
 
 
 logging.basicConfig(level=logging.INFO)
@@ -18,38 +18,30 @@ QtGui = GafferUI._qtImport( "QtGui" )
 
 logger.info('loading: %s' % MyWidget)
 
-class MyWidgetWrapper(GafferUI.Widget) :
+
+class MyWidgetWrapper(GafferUI.Widget):
     '''Create a wrapper around my custom widget'''
 
-    def __init__( self, *args, **kw ):
+    def __init__(self, *args, **kw):
         logger.info('creating: %s ' % self.__class__.__name__)
-        self.mywidget = ContextSelector()
+        self.mywidget = MyWidget()
         super(MyWidgetWrapper, self).__init__(
             self.mywidget,
             toolTip='mywidget',
             **kw
         )
 
-    def setText( self, text ) :
-
-        self._qtWidget().setText( text )
-
-    def getText( self ) :
-
-        return str( self._qtWidget().text() )
-
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
     '''Createa a plug value using my custom widget'''
 
-    def __init__( self, plug, **kw ) :
+    def __init__(self, plug, **kw):
         logger.info('creating: %s ' % self.__class__.__name__)
 
         self.__myWidget = MyWidgetWrapper()
         super(MyWidgetPlugValue, self).__init__(self.__myWidget, plug, **kw)
-        #self._addPopupMenu(self.__myWidget)
         self._updateFromPlug()
 
-    def _updateFromPlug( self ) :
+    def _updateFromPlug(self):
         logger.info('updating from plug...')
         pass
