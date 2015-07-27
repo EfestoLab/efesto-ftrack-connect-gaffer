@@ -20,7 +20,7 @@ Gaffer.Metadata.registerNode(
     """,
 
     plugs={
-        "fileName": [
+        "asset": [
 
             "description",
 
