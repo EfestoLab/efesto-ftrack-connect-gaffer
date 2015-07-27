@@ -6,7 +6,7 @@ import Gaffer
 import GafferUI
 import GafferFtrack
 
-from myWidget import MyWidget
+from ContextSelector import ContextSelector
 
 
 logging.basicConfig(level=logging.INFO)
@@ -23,12 +23,20 @@ class MyWidgetWrapper(GafferUI.Widget) :
 
     def __init__( self, *args, **kw ):
         logger.info('creating: %s ' % self.__class__.__name__)
-        self.mywidget = MyWidget()
+        self.mywidget = ContextSelector()
         super(MyWidgetWrapper, self).__init__(
             self.mywidget,
             toolTip='mywidget',
             **kw
         )
+
+    def setText( self, text ) :
+
+        self._qtWidget().setText( text )
+
+    def getText( self ) :
+
+        return str( self._qtWidget().text() )
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):

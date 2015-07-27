@@ -12,8 +12,6 @@ class FtrackImport(Gaffer.Node):
     def __init__(self, name='FtrackImport'):
         super(FtrackImport, self).__init__(name=name)
 
-        Gaffer.Node.__init__( self, name )
-
         self["fileName"] = Gaffer.StringPlug()
         self["out"] = GafferScene.ScenePlug( direction = Gaffer.Plug.Direction.Out )
 
