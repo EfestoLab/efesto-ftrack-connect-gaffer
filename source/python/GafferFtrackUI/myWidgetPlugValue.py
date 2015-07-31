@@ -31,6 +31,8 @@ class MyWidgetWrapper(GafferUI.Widget):
             'FTRACK_TASKID',
             os.getenv('FTRACK_SHOTID', '1ca0f86e-1d6e-11e5-b7ab-04013398c801')
         )
+        # hardcoded Id for testing if not running through the hook
+
         current_entity = ftrack.Task(entity)
         self.mywidget = ContextSelector(current_entity)
         super(MyWidgetWrapper, self).__init__(
