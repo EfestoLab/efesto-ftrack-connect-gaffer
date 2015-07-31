@@ -1,14 +1,16 @@
 from __future__ import with_statement
 import logging
+import os
 
 import IECore
 import Gaffer
 import GafferUI
 import GafferFtrack
 
+import ftrack
+
 from context_selector import ContextSelector
 from myWidget import MyWidget
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,7 +27,12 @@ class MyWidgetWrapper(GafferUI.Widget):
 
     def __init__(self, *args, **kw):
         logger.info('creating: %s ' % self.__class__.__name__)
-        self.mywidget = MyWidget()
+        entity = os.getenv(
+            'FTRACK_TASKID',
+            os.getenv('FTRACK_SHOTID', '1ca0f86e-1d6e-11e5-b7ab-04013398c801')
+        )
+        current_entity = ftrack.Task(entity)
+        self.mywidget = ContextSelector(current_entity)
         super(MyWidgetWrapper, self).__init__(
             self.mywidget,
             toolTip='mywidget',
