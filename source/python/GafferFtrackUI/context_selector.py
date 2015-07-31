@@ -10,14 +10,14 @@ from ftrack_connect.ui.widget import entity_browser as entityBrowser
 from ftrack_connect.ui.theme import applyTheme
 
 
-class ContextSelector(QtGui.QWidget):
+class AssetSelector(QtGui.QWidget):
     entityChanged = QtCore.Signal(object)
 
     def __init__(self, currentEntity, parent=None):
         '''Initialise ContextSelector widget with the *currentEntity* and
         *parent* widget.
         '''
-        super(ContextSelector, self).__init__(parent=parent)
+        super(AssetSelector, self).__init__(parent=parent)
         self._entity = currentEntity
         self.entityBrowser = entityBrowser.EntityBrowser()
         self.entityBrowser.setMinimumWidth(600)
@@ -26,14 +26,29 @@ class ContextSelector(QtGui.QWidget):
         applyTheme(self.entityBrowser)
         applyTheme(self.entityBrowser.overlay)
 
-        layout = QtGui.QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        main_layout = QtGui.QVBoxLayout()
+        self.setLayout(main_layout)
 
-        self.setLayout(layout)
+        # context_layout
+        context_layout = QtGui.QHBoxLayout()
+        context_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addLayout(context_layout)
 
-        layout.addWidget(self.entityPath)
-        layout.addWidget(self.entityBrowseButton)
+        context_layout.addWidget(self.entityPath)
+        context_layout.addWidget(self.entityBrowseButton)
 
+        # asset_version_layout
+        asset_version_layout = QtGui.QHBoxLayout()
+        asset_version_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addLayout(asset_version_layout)
+
+        self.assets_cb = QtGui.QComboBox()
+        self.asset_v_cb = QtGui.QComboBox()
+
+        asset_version_layout.addWidget(self.assets_cb)
+        asset_version_layout.addWidget(self.asset_v_cb)
+
+        # signals
         self.entityBrowseButton.clicked.connect(
             self._onEntityBrowseButtonClicked
         )
@@ -41,7 +56,24 @@ class ContextSelector(QtGui.QWidget):
         self.entityBrowser.selectionChanged.connect(
             self._onEntityBrowserSelectionChanged
         )
+        self.entityBrowser.selectionChanged.connect(
+            self.getAssets
+        )
         self.setEntity(currentEntity)
+
+        self.assets_cb.currentIndexChanged.connect(self.getVersions)
+
+    def getVersions(self):
+        selection = self.assets_cb.currentIndex()
+        asset = self.assets_cb.itemData(selection)
+        version = asset.getVersions()
+        print version
+
+    def getAssets(self):
+        assets = self._entity.getAssets()
+        for asset in assets:
+            name = asset.getName()
+            self.assets_cb.addItem(name, asset)
 
     def reset(self, entity=None):
         '''reset browser to the given *entity* or the default one'''

@@ -9,17 +9,13 @@ import GafferFtrack
 
 import ftrack
 
-from context_selector import ContextSelector
-from myWidget import MyWidget
+from context_selector import AssetSelector
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 QtCore = GafferUI._qtImport( "QtCore" )
 QtGui = GafferUI._qtImport( "QtGui" )
-
-
-logger.info('loading: %s' % MyWidget)
 
 
 class MyWidgetWrapper(GafferUI.Widget):
@@ -34,7 +30,7 @@ class MyWidgetWrapper(GafferUI.Widget):
         # hardcoded Id for testing if not running through the hook
 
         current_entity = ftrack.Task(entity)
-        self.mywidget = ContextSelector(current_entity)
+        self.mywidget = AssetSelector(current_entity)
         super(MyWidgetWrapper, self).__init__(
             self.mywidget,
             toolTip='mywidget',
