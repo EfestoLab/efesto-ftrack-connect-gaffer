@@ -12,6 +12,7 @@ from ftrack_connect.ui.theme import applyTheme
 
 class AssetSelector(QtGui.QWidget):
     entityChanged = QtCore.Signal(object)
+    importComponent = QtCore.Signal(object)
 
     def __init__(self, currentEntity, parent=None):
         '''Initialise ContextSelector widget with the *currentEntity* and
@@ -27,8 +28,10 @@ class AssetSelector(QtGui.QWidget):
         applyTheme(self.entityBrowser.overlay)
 
         main_layout = QtGui.QVBoxLayout()
-        self.setLayout(main_layout)
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
+        self.setLayout(main_layout)
+        self.import_button = QtGui.QPushButton('import selected component')
         # context_layout
         context_layout = QtGui.QHBoxLayout()
         context_layout.setContentsMargins(0, 0, 0, 0)
@@ -40,13 +43,24 @@ class AssetSelector(QtGui.QWidget):
         # asset_version_layout
         asset_version_layout = QtGui.QHBoxLayout()
         asset_version_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.addLayout(asset_version_layout)
 
         self.assets_cb = QtGui.QComboBox()
         self.asset_v_cb = QtGui.QComboBox()
 
         asset_version_layout.addWidget(self.assets_cb)
         asset_version_layout.addWidget(self.asset_v_cb)
+        main_layout.addLayout(asset_version_layout)
+
+        # component
+        components_layout = QtGui.QHBoxLayout()
+        components_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.components_cb = QtGui.QComboBox()
+        components_layout.addWidget(self.components_cb)
+        main_layout.addLayout(components_layout)
+
+        # import button
+        main_layout.addWidget(self.import_button)
 
         # signals
         self.entityBrowseButton.clicked.connect(
@@ -59,18 +73,45 @@ class AssetSelector(QtGui.QWidget):
         self.entityBrowser.selectionChanged.connect(
             self.getAssets
         )
+
+        self.assets_cb.currentIndexChanged.connect(self.on_getVersions)
+        self.asset_v_cb.currentIndexChanged.connect(self.on_getComponents)
+        self.import_button.clicked.connect(self.on_importComponent)
         self.setEntity(currentEntity)
 
-        self.assets_cb.currentIndexChanged.connect(self.getVersions)
+    def on_importComponent(self):
+        selection = self.components_cb.currentIndex()
+        component = self.components_cb.itemData(selection)
+        file_path = component.getFilesystemPath()
+        self.importComponent.emit(file_path)
 
-    def getVersions(self):
+    def on_getComponents(self):
+        selection = self.asset_v_cb.currentIndex()
+        version = self.asset_v_cb.itemData(selection)
+        if not version:
+            return
+        components = version.getComponents()
+        self.components_cb.clear()
+        for component in components:
+            if component.getFileType() != '.abc':
+                continue
+            self.components_cb.addItem(str(component.getName()), component)
+
+    def on_getVersions(self):
         selection = self.assets_cb.currentIndex()
         asset = self.assets_cb.itemData(selection)
-        version = asset.getVersions()
-        print version
+        if not asset:
+            return
+        versions = asset.getVersions()
+        self.asset_v_cb.clear()
+        for version in versions:
+            self.asset_v_cb.addItem(str(version.getVersion()), version)
 
     def getAssets(self):
         assets = self._entity.getAssets()
+        if not assets:
+            return
+        self.assets_cb.clear()
         for asset in assets:
             name = asset.getName()
             self.assets_cb.addItem(name, asset)
