@@ -78,7 +78,7 @@ class AssetSelector(QtGui.QWidget):
             self._onEntityBrowserSelectionChanged
         )
         self.entityBrowser.selectionChanged.connect(
-            self.getAssets
+            self.on_getAssets
         )
 
         self.assets_cb.currentIndexChanged.connect(self.on_getVersions)
@@ -116,7 +116,7 @@ class AssetSelector(QtGui.QWidget):
         for version in versions:
             self.asset_v_cb.addItem(str(version.getVersion()), version)
 
-    def getAssets(self):
+    def on_getAssets(self):
         assets = self._entity.getAssets()
         if not assets:
             return
