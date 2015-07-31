@@ -148,10 +148,10 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
         applications = []
 
         if sys.platform == 'linux2':
-
+            path = '/home/efesto/devel/efesto/docker-gafferDependencies/volume/gaffer-0.15.0.0'
             applications.extend(self._searchFilesystem(
-                versionExpression=r'Gaffer(?P<version>.*)\/.+$',
-                expression=['/', 'opt', 'gaffer-0.15.0.0-linux', 'bin', 'gaffer'],
+                # versionExpression=r'Gaffer(?P<version>.*)\/.+$',
+                expression=['/', 'home','efesto','devel', 'efesto','docker-gafferDependencies','volume','gaffer-0.15.0.0', 'bin', 'gaffer'],
                 label='gaffer {version}',
                 applicationIdentifier='gaffer_{version}',
                 icon='gaffer'
@@ -227,7 +227,7 @@ def register(registry, **kw):
     application_store = ApplicationStore()
 
     # Create a launcher with the store containing applications.
-    launcher = ApplicationLauncher(application_store)
+    launcher = ApplicationLauncher(application_store, None)
 
     # Create action and register to respond to discover and launch actions.
     action = LaunchApplicationAction(application_store, launcher)
