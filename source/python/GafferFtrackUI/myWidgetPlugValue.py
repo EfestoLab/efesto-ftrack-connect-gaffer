@@ -6,6 +6,7 @@ import Gaffer
 import GafferUI
 import GafferFtrack
 
+from context_selector import ContextSelector
 from myWidget import MyWidget
 
 
