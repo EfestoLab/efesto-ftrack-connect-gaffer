@@ -36,6 +36,17 @@ class MyWidgetWrapper(GafferUI.Widget):
             toolTip='mywidget',
             **kw
         )
+        self.__importComponentSignal = GafferUI.WidgetSignal()
+        self._qtWidget().importComponent.connect(
+            Gaffer.WeakMethod(self.__importComponent)
+        )
+
+    def importComponentSignal(self):
+        return self.__importComponentSignal
+
+    def __importComponent(self, state):
+        logger.info(state)
+        self.__importComponentSignal(self)
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
@@ -46,8 +57,19 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
 
         self.__myWidget = MyWidgetWrapper()
         super(MyWidgetPlugValue, self).__init__(self.__myWidget, plug, **kw)
+        self.__importComponentConnection = self.__myWidget.importComponentSignal().connect(
+            Gaffer.WeakMethod(self.__importComponent)
+        )
         self._updateFromPlug()
 
     def _updateFromPlug(self):
-        logger.info('updating from plug...')
         pass
+        # if self.getPlug() is not None:
+        #     with self.getContext():
+        #         with Gaffer.BlockedConnection(self.__stateChangedConnection):
+        #             self.__myWidget.setState(self.getPlug().getValue())
+
+    def __importComponent(self, value):
+        logger.info(value)
+        # with Gaffer.UndoContext(self.getPlug().ancestor(Gaffer.ScriptNode)):
+        #     self.getPlug().setValue(self.__myWidget.getState())
