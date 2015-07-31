@@ -2,12 +2,17 @@
 # :copyright: Copyright (c) 2015 ftrack
 
 import os
-import ftrack
+import logging
 from PySide import QtCore, QtGui
+
+import ftrack
 
 from ftrack_connect.ui.widget import entity_path as entityPath
 from ftrack_connect.ui.widget import entity_browser as entityBrowser
 from ftrack_connect.ui.theme import applyTheme
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class AssetSelector(QtGui.QWidget):
@@ -26,6 +31,8 @@ class AssetSelector(QtGui.QWidget):
         self.entityBrowseButton = QtGui.QPushButton('Browse')
         applyTheme(self.entityBrowser)
         applyTheme(self.entityBrowser.overlay)
+
+        self.selectedComponentPath = None
 
         main_layout = QtGui.QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
@@ -83,6 +90,8 @@ class AssetSelector(QtGui.QWidget):
         selection = self.components_cb.currentIndex()
         component = self.components_cb.itemData(selection)
         file_path = component.getFilesystemPath()
+        logger.info('emitting: %s' % file_path)
+        self.selectedComponentPath = file_path
         self.importComponent.emit(file_path)
 
     def on_getComponents(self):

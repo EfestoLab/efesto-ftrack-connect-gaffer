@@ -31,6 +31,7 @@ class MyWidgetWrapper(GafferUI.Widget):
 
         current_entity = ftrack.Task(entity)
         self.mywidget = AssetSelector(current_entity)
+
         super(MyWidgetWrapper, self).__init__(
             self.mywidget,
             toolTip='mywidget',
@@ -47,6 +48,9 @@ class MyWidgetWrapper(GafferUI.Widget):
     def __importComponent(self, state):
         logger.info(state)
         self.__importComponentSignal(self)
+
+    def getValue(self):
+        return self.mywidget.selectedComponentPath
 
 
 class MyWidgetPlugValue(GafferUI.PlugValueWidget):
@@ -71,5 +75,5 @@ class MyWidgetPlugValue(GafferUI.PlugValueWidget):
 
     def __importComponent(self, value):
         logger.info(value)
-        # with Gaffer.UndoContext(self.getPlug().ancestor(Gaffer.ScriptNode)):
-        #     self.getPlug().setValue(self.__myWidget.getState())
+        with Gaffer.UndoContext(self.getPlug().ancestor(Gaffer.ScriptNode)):
+            self.getPlug().setValue(self.__myWidget.getValue())
