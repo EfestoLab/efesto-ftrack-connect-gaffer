@@ -9,7 +9,7 @@ import GafferFtrack
 
 import ftrack
 
-from context_selector import AssetSelector
+from asset_selector import AssetSelector
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
