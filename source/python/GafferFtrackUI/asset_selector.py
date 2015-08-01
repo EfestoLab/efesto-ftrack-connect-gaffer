@@ -1,7 +1,6 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2015 ftrack
 
-import os
 import logging
 from PySide import QtCore, QtGui
 
@@ -78,52 +77,20 @@ class AssetSelector(QtGui.QWidget):
             self._onEntityBrowserSelectionChanged
         )
         self.entityBrowser.selectionChanged.connect(
-            self.on_getAssets
+            self._onGetAssetsSelectionChanged
         )
 
-        self.assets_cb.currentIndexChanged.connect(self.on_getVersions)
-        self.asset_v_cb.currentIndexChanged.connect(self.on_getComponents)
-        self.import_button.clicked.connect(self.on_importComponent)
+        self.assets_cb.currentIndexChanged.connect(
+            self._onGetVersionsIndexChanged
+        )
+        self.asset_v_cb.currentIndexChanged.connect(
+            self._onGetComponentsIndexChanged
+        )
+        self.import_button.clicked.connect(
+            self._onImportComponentClicked
+        )
+        # init the browser
         self.setEntity(currentEntity)
-
-    def on_importComponent(self):
-        selection = self.components_cb.currentIndex()
-        component = self.components_cb.itemData(selection)
-        file_path = component.getFilesystemPath()
-        logger.info('emitting: %s' % file_path)
-        self.selectedComponentPath = file_path
-        self.importComponent.emit(file_path)
-
-    def on_getComponents(self):
-        selection = self.asset_v_cb.currentIndex()
-        version = self.asset_v_cb.itemData(selection)
-        if not version:
-            return
-        components = version.getComponents()
-        self.components_cb.clear()
-        for component in components:
-            if component.getFileType() != '.abc':
-                continue
-            self.components_cb.addItem(str(component.getName()), component)
-
-    def on_getVersions(self):
-        selection = self.assets_cb.currentIndex()
-        asset = self.assets_cb.itemData(selection)
-        if not asset:
-            return
-        versions = asset.getVersions()
-        self.asset_v_cb.clear()
-        for version in versions:
-            self.asset_v_cb.addItem(str(version.getVersion()), version)
-
-    def on_getAssets(self):
-        assets = self._entity.getAssets()
-        if not assets:
-            return
-        self.assets_cb.clear()
-        for asset in assets:
-            name = asset.getName()
-            self.assets_cb.addItem(name, asset)
 
     def reset(self, entity=None):
         '''reset browser to the given *entity* or the default one'''
@@ -135,6 +102,45 @@ class AssetSelector(QtGui.QWidget):
         '''Set the *entity* for the view.'''
         self._entity = entity
         self.entityChanged.emit(entity)
+
+    def _onImportComponentClicked(self):
+        selection = self.components_cb.currentIndex()
+        component = self.components_cb.itemData(selection)
+        file_path = component.getFilesystemPath()
+        logger.info('emitting: %s' % file_path)
+        self.selectedComponentPath = file_path
+        self.importComponent.emit(file_path)
+
+    def _onGetComponentsIndexChanged(self):
+        selection = self.asset_v_cb.currentIndex()
+        version = self.asset_v_cb.itemData(selection)
+        if not version:
+            return
+        components = version.getComponents()
+        self.components_cb.clear()
+        for component in components:
+            if component.getFileType() != '.abc':
+                continue
+            self.components_cb.addItem(str(component.getName()), component)
+
+    def _onGetVersionsIndexChanged(self):
+        selection = self.assets_cb.currentIndex()
+        asset = self.assets_cb.itemData(selection)
+        if not asset:
+            return
+        versions = asset.getVersions()
+        self.asset_v_cb.clear()
+        for version in versions:
+            self.asset_v_cb.addItem(str(version.getVersion()), version)
+
+    def _onGetAssetsSelectionChanged(self):
+        assets = self._entity.getAssets()
+        if not assets:
+            return
+        self.assets_cb.clear()
+        for asset in assets:
+            name = asset.getName()
+            self.assets_cb.addItem(name, asset)
 
     def _onEntityBrowseButtonClicked(self):
         '''Handle entity browse button clicked.'''
