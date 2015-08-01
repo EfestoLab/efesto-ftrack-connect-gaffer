@@ -148,10 +148,15 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
         applications = []
 
         if sys.platform == 'linux2':
-            path = '/home/efesto/devel/efesto/docker-gafferDependencies/volume/gaffer-0.15.0.0'
+            gaffer_install_path = os.getenv('GAFFER_INSTALL_PATH')
+            path = gaffer_install_path.split(os.sep)
+            path[0] = os.sep
+            path.append('bin')
+            path.append('gaffer')
+
             applications.extend(self._searchFilesystem(
-                # versionExpression=r'Gaffer(?P<version>.*)\/.+$',
-                expression=['/', 'home','efesto','devel', 'efesto','docker-gafferDependencies','volume','gaffer-0.15.0.0', 'bin', 'gaffer'],
+                # versionExpression=r'gaffer-(?P<version>.*)\/.+$',
+                expression=path,
                 label='gaffer {version}',
                 applicationIdentifier='gaffer_{version}',
                 icon='gaffer'
@@ -212,7 +217,6 @@ def register(registry, **kw):
     logger = logging.getLogger(
         'ftrack_plugin:efesto-ftrack_connect_gaffer_hook.register'
     )
-
     # Validate that registry is an instance of ftrack.Registry. If not,
     # assume that register is being called from a new or incompatible API and
     # return without doing anything.
