@@ -14,8 +14,8 @@ from asset_selector import AssetSelector
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-QtCore = GafferUI._qtImport( "QtCore" )
-QtGui = GafferUI._qtImport( "QtGui" )
+QtCore = GafferUI._qtImport("QtCore")
+QtGui = GafferUI._qtImport("QtGui")
 
 
 class MyWidgetWrapper(GafferUI.Widget):
