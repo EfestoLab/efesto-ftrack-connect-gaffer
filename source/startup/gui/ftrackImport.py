@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 logger.info('registering nodeMenu')
 
 nodeMenu.append(
-    "/Ftrack/Import",
-    GafferFtrack.FtrackImport,
-    searchText="FtrackImport"
+    "/Ftrack/AbcImport",
+    GafferFtrack.FtrackAbcImport,
+    searchText="FtrackAbcImport"
 )

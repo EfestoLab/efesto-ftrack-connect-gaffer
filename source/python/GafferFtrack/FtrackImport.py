@@ -8,9 +8,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class FtrackImport(Gaffer.Node):
-    def __init__(self, name='FtrackImport'):
-        super(FtrackImport, self).__init__(name=name)
+class FtrackAbcImport(Gaffer.Node):
+    def __init__(self, name='FtrackAbcImport'):
+        super(FtrackAbcImport, self).__init__(name=name)
 
         self["asset"] = Gaffer.StringPlug()
         self["out"] = GafferScene.ScenePlug( direction = Gaffer.Plug.Direction.Out )
@@ -19,4 +19,4 @@ class FtrackImport(Gaffer.Node):
         self["__reader"]["fileName"].setInput( self["asset"] )
         self["out"].setInput( self["__reader"]["out"] )
 
-IECore.registerRunTimeTyped(FtrackImport)
+IECore.registerRunTimeTyped(FtrackAbcImport)

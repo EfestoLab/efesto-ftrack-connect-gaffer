@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-node = GafferFtrack.FtrackImport
+node = GafferFtrack.FtrackAbcImport
 
 logger.info('registering node %s' % node)
 
