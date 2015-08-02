@@ -52,18 +52,14 @@ class AssetSelector(QtGui.QWidget):
 
         self.assets_cb = QtGui.QComboBox()
         self.asset_v_cb = QtGui.QComboBox()
+        self.asset_v_cb.setMinimumWidth(70)
+        self.components_cb = QtGui.QComboBox()
 
         asset_version_layout.addWidget(self.assets_cb)
         asset_version_layout.addWidget(self.asset_v_cb)
+        asset_version_layout.addWidget(self.components_cb)
+
         main_layout.addLayout(asset_version_layout)
-
-        # component
-        components_layout = QtGui.QHBoxLayout()
-        components_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.components_cb = QtGui.QComboBox()
-        components_layout.addWidget(self.components_cb)
-        main_layout.addLayout(components_layout)
 
         # import button
         main_layout.addWidget(self.import_button)
