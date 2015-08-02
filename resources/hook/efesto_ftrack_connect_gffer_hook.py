@@ -152,13 +152,12 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
             path = gaffer_install_path.split(os.sep)
             path[0] = os.sep
             path.append('bin')
-            path.append('gaffer')
+            path.append('gaffer$')
 
             applications.extend(self._searchFilesystem(
-                # versionExpression=r'gaffer-(?P<version>.*)\/.+$',
                 expression=path,
-                label='gaffer {version}',
-                applicationIdentifier='gaffer_{version}',
+                label='Gaffer {version}',
+                applicationIdentifier='gaffer_{version}$',
                 icon='gaffer'
             ))
 
