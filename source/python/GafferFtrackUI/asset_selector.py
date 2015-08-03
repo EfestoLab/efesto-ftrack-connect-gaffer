@@ -1,7 +1,8 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2015 ftrack
-
+import os
 import logging
+import getpass
 from PySide import QtCore, QtGui
 
 import ftrack
@@ -9,6 +10,7 @@ import ftrack
 from ftrack_connect.ui.widget import entity_path as entityPath
 from ftrack_connect.ui.widget import entity_browser as entityBrowser
 from ftrack_connect.ui.theme import applyTheme
+from ftrack_connect.ui.widget import header
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,12 +32,12 @@ class AssetSelector(QtGui.QWidget):
         self.entityBrowseButton = QtGui.QPushButton('Browse')
         applyTheme(self.entityBrowser)
         applyTheme(self.entityBrowser.overlay)
-
+        user = os.getenv('LOGNAME', getpass.getuser())
         self.selectedComponentPath = None
-
+        self.header = header.Header(user)
         main_layout = QtGui.QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
-
+        main_layout.addWidget(self.header)
         self.setLayout(main_layout)
         self.import_button = QtGui.QPushButton('import selected component')
         # context_layout
