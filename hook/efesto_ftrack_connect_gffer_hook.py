@@ -230,6 +230,17 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
             gaffer_startup_path, 'GAFFER_STARTUP_PATHS', environment
         )
 
+        qt_plugins_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'qt_plugins')
+        environment = ftrack_connect.application.appendPath(
+            qt_plugins_path, 'QT_PLUGIN_PATH', environment
+        )
+
+        pyside_libraries = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'pyside')
+        environment = ftrack_connect.application.appendPath(
+            pyside_libraries, 'LD_LIBRARY_PATG', environment
+        )       
+
+        print environment
         return environment
 
 
