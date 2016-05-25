@@ -12,6 +12,19 @@ import ftrack
 import ftrack_connect.application
 
 
+EFESTO_FTRACK_CONNECT_GAFFER_PATH = os.environ.get(
+    'EFESTO_FTRACK_CONNECT_GAFFER_PATH', 
+     os.path.abspath(
+        os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'source')
+    )
+)
+
+GAFFER_INSTALL_PATH=os.environ.get(
+    'GAFFER_INSTALL_PATH',
+    '/home/efesto/Desktop/gaffer-0.24.0.0-linux'
+)
+
+
 class LaunchApplicationAction(object):
     '''Discover and launch gaffer.'''
 
@@ -148,16 +161,17 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
         applications = []
 
         if sys.platform == 'linux2':
-            gaffer_install_path = os.getenv('GAFFER_INSTALL_PATH')
+            gaffer_install_path = GAFFER_INSTALL_PATH
             path = gaffer_install_path.split(os.sep)
             path[0] = os.sep
             path.append('bin')
-            path.append('gaffer$')
+            path.append('gaffer')
 
             applications.extend(self._searchFilesystem(
                 expression=path,
-                label='Gaffer {version}',
-                applicationIdentifier='gaffer_{version}$',
+                label='Gaffer',
+                variant='{version}',
+                applicationIdentifier='gaffer_{version}',
                 icon='gaffer'
             ))
 
@@ -166,7 +180,6 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
                 pprint.pformat(applications)
             )
         )
-
         return applications
 
 
@@ -206,6 +219,16 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
 
         environment['FTRACK_TASKID'] = task.getId()
         environment['FTRACK_SHOTID'] = task.get('parent_id')
+
+        environment = ftrack_connect.application.appendPath(
+            EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'PYTHONPATH', environment
+        )
+
+        gaffer_startup_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'sartup')
+
+        environment = ftrack_connect.application.appendPath(
+            gaffer_startup_path, 'GAFFER_STARTUP_PATHS', environment
+        )
 
         return environment
 
