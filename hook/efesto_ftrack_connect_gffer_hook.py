@@ -19,8 +19,8 @@ EFESTO_FTRACK_CONNECT_GAFFER_PATH = os.environ.get(
     )
 )
 
-GAFFER_INSTALL_PATH=os.environ.get(
-    'GAFFER_INSTALL_PATH',
+GAFFER_ROOT = os.environ.get(
+    'GAFFER_ROOT',
     '/home/efesto/Desktop/gaffer-0.24.0.0-linux'
 )
 
@@ -161,11 +161,11 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
         applications = []
 
         if sys.platform == 'linux2':
-            gaffer_install_path = GAFFER_INSTALL_PATH
-            path = gaffer_install_path.split(os.sep)
+            gaffer_root = GAFFER_ROOT
+            path = gaffer_root.split(os.sep)
             path[0] = os.sep
             path.append('bin')
-            path.append('gaffer')
+            path.append('gaffer$')
 
             applications.extend(self._searchFilesystem(
                 expression=path,
@@ -220,6 +220,10 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
         environment['FTRACK_TASKID'] = task.getId()
         environment['FTRACK_SHOTID'] = task.get('parent_id')
 
+        environment = ftrack_connect.application.appendPath(
+            GAFFER_ROOT, 'GAFFER_ROOT', environment
+        )
+
         gaffer_connect_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'python')
         environment = ftrack_connect.application.appendPath(
             gaffer_connect_path, 'PYTHONPATH', environment
@@ -230,15 +234,20 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
             gaffer_startup_path, 'GAFFER_STARTUP_PATHS', environment
         )
 
-        qt_plugins_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'qt_plugins')
+        qt_plugins_path = os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'qt_plugins'))
         environment = ftrack_connect.application.appendPath(
             qt_plugins_path, 'QT_PLUGIN_PATH', environment
         )
 
-        pyside_libraries = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'pyside')
+        pyside_libraries = os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'pyside'))
         environment = ftrack_connect.application.appendPath(
-            pyside_libraries, 'LD_LIBRARY_PATG', environment
+            pyside_libraries, 'LD_LIBRARY_PATH', environment
         )       
+
+        environment = ftrack_connect.application.appendPath(
+            pyside_libraries, 'PYTHONPATH', environment
+        )       
+
 
         print environment
         return environment
