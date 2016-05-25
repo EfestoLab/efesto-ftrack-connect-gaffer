@@ -220,12 +220,12 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
         environment['FTRACK_TASKID'] = task.getId()
         environment['FTRACK_SHOTID'] = task.get('parent_id')
 
+        gaffer_connect_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'python')
         environment = ftrack_connect.application.appendPath(
-            EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'PYTHONPATH', environment
+            gaffer_connect_path, 'PYTHONPATH', environment
         )
 
-        gaffer_startup_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'sartup')
-
+        gaffer_startup_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'startup')
         environment = ftrack_connect.application.appendPath(
             gaffer_startup_path, 'GAFFER_STARTUP_PATHS', environment
         )
