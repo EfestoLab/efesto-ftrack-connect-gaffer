@@ -314,12 +314,16 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
 
         # OVERRIDES
         # QTPLUGINS svg & xml
-        qt_plugins_path = os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'qt_plugins'))
+
+        resource_folder =  os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource'))
+
+        qt_plugins_path = os.path.abspath(os.path.join(resource_folder, 'qt_plugins'))
         environment = ftrack_connect.application.appendPath(
             qt_plugins_path, 'QT_PLUGIN_PATH', environment
         )
 
-        pyside_libraries = os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource', 'pyside'))
+
+        pyside_libraries = os.path.abspath(os.path.join(resource_folder, 'pyside'))
         environment = ftrack_connect.application.appendPath(
             pyside_libraries, 'LD_LIBRARY_PATH', environment
         )
