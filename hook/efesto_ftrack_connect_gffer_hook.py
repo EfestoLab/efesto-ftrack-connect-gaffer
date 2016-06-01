@@ -13,7 +13,7 @@ import ftrack_connect.application
 
 
 EFESTO_FTRACK_CONNECT_GAFFER_PATH = os.environ.get(
-    'EFESTO_FTRACK_CONNECT_GAFFER_PATH', 
+    'EFESTO_FTRACK_CONNECT_GAFFER_PATH',
      os.path.abspath(
         os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'source')
     )
@@ -21,7 +21,7 @@ EFESTO_FTRACK_CONNECT_GAFFER_PATH = os.environ.get(
 
 GAFFER_ROOT = os.environ.get(
     'GAFFER_ROOT',
-    '/home/efesto/apps/gaffer-0.24.0.0-linux'
+    '/usr/local/gaffer'
 )
 
 
@@ -166,7 +166,6 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
             path[0] = os.sep
             path.append('bin')
             path.append('^gaffer$')
-            print path
 
             applications.extend(self._searchFilesystem(
                 expression=path,
@@ -181,6 +180,7 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
                 pprint.pformat(applications)
             )
         )
+
         return applications
 
 
@@ -192,85 +192,6 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
         super(ApplicationLauncher, self).__init__(application_store)
 
         self.plugin_path = plugin_path
-
-
-    def _setupGafferEnvs(self, environment):
-
-        root = GAFFER_ROOT
-        environment = ftrack_connect.application.appendPath(
-            root, 'GAFFER_ROOT', environment
-        )
-
-        glsl = os.path.join(GAFFER_ROOT, 'glsl')
-        environment = ftrack_connect.application.appendPath(glsl, 'IECOREGL_SHADER_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(glsl, 'IECOREGL_SHADER_INCLUDE_PATHS', environment)
-
-        fonts = os.path.join(GAFFER_ROOT, 'fonts')
-        environment = ftrack_connect.application.appendPath(fonts, 'IECORE_FONT_PATHS', environment)
-
-        op = os.path.join(GAFFER_ROOT, 'ops')
-        local_op = os.path.join(os.getenv('HOME'), 'gaffer', 'ops')
-        environment = ftrack_connect.application.appendPath(op, 'IECORE_OP_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_op, 'IECORE_OP_PATHS', environment)
-
-        op_preset = os.path.join(GAFFER_ROOT, 'opPresets')
-        local_op_preset = os.path.join(os.getenv('HOME'), 'gaffer', 'opPresets')
-        environment = ftrack_connect.application.appendPath(op_preset, 'IECORE_OP_PRESET_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_op_preset, 'IECORE_OP_PRESET_PATHS', environment)
-
-        proc_path =  os.path.join(GAFFER_ROOT, 'procedurals')
-        local_proc_path = os.path.join(os.getenv('HOME'), 'gaffer', 'procedurals')
-        environment = ftrack_connect.application.appendPath(proc_path, 'IECORE_PROCEDURAL_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_proc_path, 'IECORE_PROCEDURAL_PATHS', environment)
-        
-        proc_preset_path = os.path.join(GAFFER_ROOT, 'proceduralPresets')
-        local_proc_preset_path = os.path.join(os.getenv('HOME'), 'gaffer', 'proceduralPresets')
-        environment = ftrack_connect.application.appendPath(proc_preset_path, 'IECORE_PROCEDURAL_PRESET_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_proc_preset_path, 'IECORE_PROCEDURAL_PRESET_PATHS', environment)
-
-        tiles =  os.path.join(GAFFER_ROOT, 'resources','cortex','tileset_2048.dat')
-        environment = ftrack_connect.application.appendPath(tiles, 'CORTEX_POINTDISTRIBUTION_TILESET', environment)
-
-        apps =  os.path.join(GAFFER_ROOT, 'apps')
-        local_apps = os.path.join(os.getenv('HOME'), 'gaffer', 'apps')
-        environment = ftrack_connect.application.appendPath(apps, 'GAFFER_APP_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_apps, 'GAFFER_APP_PATHS', environment)
-
-        startup = os.path.join(GAFFER_ROOT, 'startup')
-        local_startup = os.path.join(os.getenv('HOME'), 'gaffer', 'startup')
-        environment = ftrack_connect.application.appendPath(startup, 'GAFFER_STARTUP_PATHS', environment)
-        environment = ftrack_connect.application.appendPath(local_startup, 'GAFFER_STARTUP_PATHS', environment)
-
-        gui_image_path = os.path.join(GAFFER_ROOT, 'graphics') 
-        environment = ftrack_connect.application.appendPath(gui_image_path, 'GAFFERUI_IMAGE_PATHS', environment)
-
-        oslhome = GAFFER_ROOT
-        environment = ftrack_connect.application.appendPath(oslhome, 'OSLHOME', environment)
-
-        library_path = os.path.join(GAFFER_ROOT, 'lib') 
-        environment = ftrack_connect.application.appendPath(library_path, 'LD_LIBRARY_PATH', environment)
-
-        path = os.path.join(GAFFER_ROOT, 'bin')
-        environment = ftrack_connect.application.appendPath(path, 'PATH', environment)
-
-        appleseed = os.path.join(GAFFER_ROOT, 'appleseed')
-        environment = ftrack_connect.application.appendPath(appleseed, 'APPLESEED', environment)
-
-        appleseed_lib = os.path.join(appleseed, 'lib')
-        environment = ftrack_connect.application.appendPath(appleseed_lib, 'LD_LIBRARY_PATH', environment)
-
-        appleseed_python = os.path.join(appleseed, 'lib', 'python2.7')
-        environment = ftrack_connect.application.appendPath(appleseed_python, 'PYTHONPATH', environment)
-
-        appleseed_search_path = os.path.join(appleseed, 'shaders')
-        gaffer_display = os.path.join(GAFFER_ROOT, 'appleseedDisplays')
-        environment = ftrack_connect.application.appendPath(appleseed_search_path, 'APPLESEED_SEARCHPATH', environment)
-        environment = ftrack_connect.application.appendPath(gaffer_display, 'APPLESEED_SEARCHPATH', environment)
-
-        appleseed_bin = os.path.join(appleseed, 'bin')
-        environment = ftrack_connect.application.appendPath(path, 'PATH', environment)
-
-        return environment
 
     def _getApplicationEnvironment(
         self, application, context=None
@@ -300,8 +221,6 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
         environment['FTRACK_TASKID'] = task.getId()
         environment['FTRACK_SHOTID'] = task.get('parent_id')
 
-        # environment = self._setupGafferEnvs(environment)
-
         gaffer_connect_path = os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, 'python')
         environment = ftrack_connect.application.appendPath(
             gaffer_connect_path, 'PYTHONPATH', environment
@@ -312,27 +231,6 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
             gaffer_startup_path, 'GAFFER_STARTUP_PATHS', environment
         )
 
-        # OVERRIDES
-        # QTPLUGINS svg & xml
-
-        resource_folder =  os.path.abspath(os.path.join(EFESTO_FTRACK_CONNECT_GAFFER_PATH, '..', 'resource'))
-
-        qt_plugins_path = os.path.abspath(os.path.join(resource_folder, 'qt_plugins'))
-        environment = ftrack_connect.application.appendPath(
-            qt_plugins_path, 'QT_PLUGIN_PATH', environment
-        )
-
-
-        pyside_libraries = os.path.abspath(os.path.join(resource_folder, 'pyside'))
-        environment = ftrack_connect.application.appendPath(
-            pyside_libraries, 'LD_LIBRARY_PATH', environment
-        )
-
-        environment = ftrack_connect.application.appendPath(
-            pyside_libraries, 'PYTHONPATH', environment
-        )
-
-        print environment
         return environment
 
 
