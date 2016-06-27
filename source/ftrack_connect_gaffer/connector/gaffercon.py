@@ -6,9 +6,12 @@ import uuid
 
 from PySide import QtCore, QtGui
 
-
 from ftrack_connect.connector import base as maincon
 from ftrack_connect.connector import FTAssetHandlerInstance
+
+import GafferUI
+
+from .gafferutil import getScriptNode
 
 class Connector(maincon.Connector):
     def __init__(self):
@@ -16,6 +19,9 @@ class Connector(maincon.Connector):
 
     @staticmethod
     def getAssets():
+        scriptNode = getScriptNode()
+
+        print "*** getAssets called!!!"
         return []
 
     @staticmethod

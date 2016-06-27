@@ -22,28 +22,14 @@ import GafferUI
 
 import GafferFtrack
 
+from .gafferutil import getScriptNode
+
 import logging
 logger = logging.getLogger(__name__)
 
 class GeometryAsset(FTAssetType):
     def __init__(self):
         super(GeometryAsset, self).__init__()
-
-    def _getScriptNode(self):
-        # Use raw Qt to find the active window
-        QtGui = GafferUI._qtImport("QtGui")
-        app = QtGui.QApplication.instance()
-        qActiveWindow = app.activeWindow()
-        # Find the GafferUI.Widget which owns that QWidget
-        activeWindow = GafferUI.Widget._owner(qActiveWindow)
-
-        print "*** activeWindow = ", activeWindow, ", type = ", type(activeWindow)
-
-        if not isinstance(activeWindow, GafferUI.ScriptWindow):
-            activeWindow = activeWindow.ancestor(GafferUI.ScriptWindow)
-            print "*** activeWindow = ", activeWindow, ", type = ", type(activeWindow)
-
-        return activeWindow.scriptNode()
 
     def _uniqueNodeName(self, script, prefix):
         name = prefix
@@ -70,7 +56,7 @@ class GeometryAsset(FTAssetType):
             node['assetTake'].setValue(iAObj.componentName)
             node['assetComponentId'].setValue(iAObj.componentId)
 
-            script = self._getScriptNode()
+            script = getScriptNode()
             nodeName = self._uniqueNodeName(script, 'ftrackAbcImport')
             script[nodeName] = node
 

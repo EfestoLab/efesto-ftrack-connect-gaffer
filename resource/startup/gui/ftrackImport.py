@@ -22,67 +22,35 @@ from ftrack_connect_gaffer.ui.tasks import FtrackTasksDialog
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 ftrack.setup()
-
-currentEntity = ftrack.Task(
-	os.getenv('FTRACK_TASKID',
-	os.getenv('FTRACK_SHOTID')))
-
-'''
-dialogs = [
-	FtrackImportAssetDialog,
-	functools.partial(
-		PublishAssetDialog,
-		currentEntity=currentEntity
-	),
-	'-----------------------',
-	FtrackAssetManagerDialog,
-	'-----------------------',
-	FtrackMayaInfoDialog,
-	FtrackTasksDialog
-]
-'''
 
 connector = Connector()
 
-def createAndShowFtrackDialog(Dialog):
-	app = QtGui.QApplication.instance()
-	qActiveWindow = app.activeWindow()
-	# Find the GafferUI.Widget which owns that QWidget
-	activeWindow = GafferUI.Widget._owner(qActiveWindow)
-
-	if not isinstance(activeWindow, GafferUI.ScriptWindow):
-		activeWindow = activeWindow.ancestor(GafferUI.ScriptWindow)
-
-	parentWidget = activeWindow._qtWidget()
-	print "*** parentWidget = ", parentWidget, ", type = ", type(parentWidget)
-	print "*** parentParent = ", parentWidget.parent()
-
-	ftrack_dialog = Dialog(parent=parentWidget, connector=connector)
+def createAndShowFtrackDialog(Dialog, menu):
+	scriptWindow = menu.ancestor(GafferUI.ScriptWindow)
+	ftrack_dialog = Dialog(parent=scriptWindow._qtWidget(), connector=connector)
 	ftrack_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 	ftrack_dialog.show()
 
 def loadAndInit():
-
 	logger.debug("Initializing Ftrack plugin...")
 	connector.registerAssets()
 
 	scriptWindowMenu = GafferUI.ScriptWindow.menuDefinition(application)
 
 	scriptWindowMenu.append("/Ftrack/Import Asset", {
-		"command" : functools.partial(createAndShowFtrackDialog, FtrackImportAssetDialog)})
+		"command" : functools.partial(createAndShowFtrackDialog, Dialog=FtrackImportAssetDialog)})
 
-	'''
-	for Dialog in dialogs:
-		if isinstance(Dialog, basestring):
-			# todo: add separator here...
-			continue
+	currentEntity = ftrack.Task(
+		os.getenv('FTRACK_TASKID',
+		os.getenv('FTRACK_SHOTID')))
 
-		widget_name = ftrack_dialog.windowTitle().replace('ftrack', '')
+	scriptWindowMenu.append("/Ftrack/Publish Asset", {
+		"command" : functools.partial(createAndShowFtrackDialog, Dialog=PublishAssetDialog, currentEntity=currentEntity)})
 
-		logger.debug("Adding menu item for dialog: %s" % widget_name)
-		scriptWindowMenu.append( "/Ftrack/" + widget_name, { "command" : ftrack_dialog.show } )
-	'''
+	scriptWindowMenu.append("/Ftrack/Asset Manager", {
+		"command" : functools.partial(createAndShowFtrackDialog, Dialog=FtrackAssetManagerDialog)})
 
 	nodeMenu.append(
 		"/Ftrack/FtrackAbcImport",

@@ -7,11 +7,11 @@ import GafferScene
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class FtrackAbcImport( GafferScene.SceneNode ) :
 
-    def __init__( self, name = "FtrackAbcImport" ) :
+class FtrackAbcImport(GafferScene.SceneNode):
 
-        GafferScene.SceneNode.__init__( self, name )
+    def __init__(self, name = "FtrackAbcImport"):
+        super(FtrackAbcImport, self).__init__(name)
 
         self["fileName"] = Gaffer.StringPlug(defaultValue = "")
         self["refreshCount"] = Gaffer.IntPlug()
@@ -23,11 +23,11 @@ class FtrackAbcImport( GafferScene.SceneNode ) :
         self["assetComponentId"] = Gaffer.StringPlug(defaultValue = "")
 
         self["__source"] = GafferScene.AlembicSource()
-        self["__source"]["enabled"].setInput( self["enabled"] )
+        self["__source"]["enabled"].setInput(self["enabled"])
 
-        self["__source"]["fileName"].setInput( self["fileName"] )
-        self["__source"]["refreshCount"].setInput( self["refreshCount"] )
+        self["__source"]["fileName"].setInput(self["fileName"])
+        self["__source"]["refreshCount"].setInput(self["refreshCount"])
 
-        self["out"].setInput( self["__source"]["out"] )
+        self["out"].setInput(self["__source"]["out"])
 
-IECore.registerRunTimeTyped( FtrackAbcImport )
+IECore.registerRunTimeTyped(FtrackAbcImport)
