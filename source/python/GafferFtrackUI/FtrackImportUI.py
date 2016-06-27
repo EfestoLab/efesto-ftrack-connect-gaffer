@@ -1,6 +1,9 @@
 import logging
 
+import IECore
+
 import Gaffer
+import GafferUI
 import GafferFtrack
 
 logging.basicConfig(level=logging.INFO)
@@ -13,41 +16,43 @@ logger.info('registering node %s' % node)
 
 
 Gaffer.Metadata.registerNode(
-    node,
-    "description",
-    """
-    Ftrack Import Node
-    """,
+	node,
+	"description",
+	"""
+	Ftrack Import Node
+	""",
+	plugs = {
 
-    plugs={
-        "asset": [
+		"fileName" : [
 
-            "description",
+			"description",
+			"""
+			Description here...
+			""",
 
-            """
-            Provide a custom widget.
-            """,
+			"plugValueWidget:type", "GafferUI.FileSystemPathPlugValueWidget",
+			"pathPlugValueWidget:leaf", True,
+			"pathPlugValueWidget:valid", True,
+			"pathPlugValueWidget:bookmarks", "sceneCache",
+			"fileSystemPathPlugValueWidget:extensions", IECore.StringVectorData( [ "abc" ] ),
+		],
 
-            # "nodule:type", "",
-            # "layout:section", "User",
-            "plugValueWidget:type",  # layout:widgetType : gaffer 0.14
-            "GafferFtrackUI.MyWidgetPlugValue",
-        ],
+		"refreshCount" : [],
 
-        # "another": [
+		"assetId" : [],
+		"assetVersion" : [],
+		"assetPath" : [],
+		"assetTake" : [],
+		"assetComponentId" : [],
+	}
+)
 
-        #     "description",
-
-        #     """
-        #     A String Plug widget.
-        #     """,
-
-        #     "nodule:type", "",
-        #     "plugValueWidget:type",
-        #     "GafferUI.StringPlugValueWidget",
-
-        # ]
-    }
+GafferUI.PlugValueWidget.registerCreator(
+	node,
+	"refreshCount",
+	GafferUI.IncrementingPlugValueWidget,
+	label = "Refresh",
+	undoable = False
 )
 
 logger.info('node %s registered' % node)

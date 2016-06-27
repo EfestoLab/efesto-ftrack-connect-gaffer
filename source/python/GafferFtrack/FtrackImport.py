@@ -7,16 +7,27 @@ import GafferScene
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+class FtrackAbcImport( GafferScene.SceneNode ) :
 
-class FtrackAbcImport(Gaffer.Node):
-    def __init__(self, name='FtrackAbcImport'):
-        super(FtrackAbcImport, self).__init__(name=name)
+    def __init__( self, name = "FtrackAbcImport" ) :
 
-        self["asset"] = Gaffer.StringPlug()
-        self["out"] = GafferScene.ScenePlug( direction = Gaffer.Plug.Direction.Out )
+        GafferScene.SceneNode.__init__( self, name )
 
-        self["__reader"] = GafferScene.AlembicSource()
-        self["__reader"]["fileName"].setInput( self["asset"] )
-        self["out"].setInput( self["__reader"]["out"] )
+        self["fileName"] = Gaffer.StringPlug(defaultValue = "")
+        self["refreshCount"] = Gaffer.IntPlug()
 
-IECore.registerRunTimeTyped(FtrackAbcImport)
+        self["assetId"] = Gaffer.StringPlug(defaultValue = "")
+        self["assetVersion"] = Gaffer.IntPlug(defaultValue = 0)
+        self["assetPath"] = Gaffer.StringPlug(defaultValue = "")
+        self["assetTake"] = Gaffer.StringPlug(defaultValue = "")
+        self["assetComponentId"] = Gaffer.StringPlug(defaultValue = "")
+
+        self["__source"] = GafferScene.AlembicSource()
+        self["__source"]["enabled"].setInput( self["enabled"] )
+
+        self["__source"]["fileName"].setInput( self["fileName"] )
+        self["__source"]["refreshCount"].setInput( self["refreshCount"] )
+
+        self["out"].setInput( self["__source"]["out"] )
+
+IECore.registerRunTimeTyped( FtrackAbcImport )
